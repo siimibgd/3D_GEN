@@ -21,8 +21,8 @@ def load_and_preprocess(image_path):
     return image, inputs
 
 # Load left and right images
-left_img_path = "Left.jpeg"
-right_img_path = "Right.jpeg"
+left_img_path = "Middlebury/Left.png"
+right_img_path = "Middlebury/Right.png"
 
 left_image, left_inputs = load_and_preprocess(left_img_path)
 right_image, right_inputs = load_and_preprocess(right_img_path)

@@ -38,7 +38,7 @@ if num_points < 100:
     print("⚠️ AVERTISMENT: Norul de puncte are foarte puține puncte! Mesh-ul poate fi gol.")
 
 # Convertește radiile într-un obiect Open3D DoubleVector
-radii = o3d.utility.DoubleVector([0.02, 0.05, 0.1])  # Radii optimizate pentru a reduce complexitatea
+radii = o3d.utility.DoubleVector([0.01, 0.02, 0.05])  # Radii optimizate pentru a reduce complexitatea
 
 
 # Funcția pentru a crea mesh dintr-un subset de puncte
