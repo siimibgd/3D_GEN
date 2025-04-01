@@ -1,19 +1,36 @@
-import torch
-import cv2
+import open3d as o3d
 import numpy as np
-import urllib.request
-from torchvision.transforms import Compose
+import cv2
+import os
 
-# Load model
-midas = torch.hub.load("intel-isl/MiDaS", "MiDaS_small")
-midas.eval()
+# Încarcă norul de puncte cu culoare (obținut din imaginea stângă)
+pcd = o3d.io.read_point_cloud("point_cloud.ply")
+print("✅ Norul de puncte a fost încărcat")
 
-# Load image
-img = cv2.imread("./Middlebury/Right_Cetatii.jpeg")
-img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+# Estimează normalele
+print("🔄 Estimăm normalele...")
+pcd.estimate_normals(search_param=o3d.geometry.KDTreeSearchParamHybrid(radius=0.1, max_nn=30))
 
-# Depth estimation
-depth_map = midas(torch.tensor(img).unsqueeze(0))
+# Downsampling (opțional, pentru performanță)
+pcd = pcd.voxel_down_sample(voxel_size=0.01)
 
-cv2.imshow("Depth Map", depth_map.numpy())
-cv2.waitKey(0)
+# Generare mesh cu Poisson (alternativ la Ball Pivoting)
+print("🔄 Generăm mesh-ul (Poisson Reconstruction)...")
+mesh, densities = o3d.geometry.TriangleMesh.create_from_point_cloud_poisson(pcd, depth=10)
+print("✅ Mesh generat cu succes!")
+
+# Crop la bounding box-ul norului de puncte (pentru a elimina mesh-uri în afara scenei)
+bbox = pcd.get_axis_aligned_bounding_box()
+mesh = mesh.crop(bbox)
+
+# Aplică textura: convertim imaginea într-un mesh texturat manual
+# În acest caz, salvăm doar culorile punctelor pe mesh-ul triangulat
+
+# Vizualizare mesh + culoare din point cloud
+print("🎨 Aplicăm culorile din point cloud pe mesh...")
+mesh.vertex_colors = pcd.colors  # simplu, dar eficient
+
+# Salvează și vizualizează
+o3d.io.write_triangle_mesh("textured_mesh.ply", mesh)
+print("✅ Mesh salvat ca textured_mesh.ply")
+o3d.visualization.draw_geometries([mesh])

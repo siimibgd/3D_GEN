@@ -4,11 +4,13 @@ import os
 from PIL import Image
 
 def run(paths):
+#def run():
     os.environ["OPEN3D_HEADLESS"] = "1"
 
     save_directory = os.path.dirname(os.path.abspath(__file__))
-    fused_depth_path = os.path.join(save_directory, "right_depth.npy")
-    left_image_path = os.path.join(save_directory, paths[1])
+    fused_depth_path = os.path.join(save_directory, "disparity_map.npy")
+    #left_image_path = os.path.join(save_directory, paths[1])
+    left_image_path = os.path.join(save_directory, "Middlebury/Left_Pendulum.png")
 
     if not os.path.exists(fused_depth_path):
         print("❌ ERROR: No fused depth map found! Run 'depth_estimation.py' first.")
@@ -50,3 +52,4 @@ def run(paths):
     o3d.io.write_point_cloud(os.path.join(save_directory, "point_cloud.ply"), pcd)
     o3d.visualization.draw_geometries([pcd])
     print("✅ 3D Point Cloud with color saved!")
+#run()

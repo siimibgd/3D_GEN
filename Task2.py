@@ -3,8 +3,8 @@ import numpy as np
 import open3d as o3d
 
 # Load stereo images
-imgL = cv2.imread("Middlebury/Left.png", cv2.IMREAD_GRAYSCALE)
-imgR = cv2.imread("Middlebury/Right.png", cv2.IMREAD_GRAYSCALE)
+imgL = cv2.imread("App_OK/Middlebury/Left.png", cv2.IMREAD_GRAYSCALE)
+imgR = cv2.imread("App_OK/Middlebury/Right.png", cv2.IMREAD_GRAYSCALE)
 
 # Stereo Matching
 stereo = cv2.StereoSGBM_create(numDisparities=64, blockSize=9)

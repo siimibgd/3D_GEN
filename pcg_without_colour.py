@@ -7,7 +7,7 @@ def run():
     os.environ["OPEN3D_HEADLESS"] = "1"
 
     save_directory = os.path.dirname(os.path.abspath(__file__))
-    fused_depth_path = os.path.join(save_directory, "right_depth.npy")
+    fused_depth_path = os.path.join(save_directory, "disparity_map.npy")
 
     if not os.path.exists(fused_depth_path):
         print("❌ ERROR: No fused depth map found! Run 'depth_estimation.py' first.")
